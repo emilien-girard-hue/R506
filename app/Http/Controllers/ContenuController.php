@@ -6,6 +6,7 @@ use App\Http\Requests\StoreAuteurRequest;
 use App\Http\Requests\StoreContenuRequest;
 use App\Http\Requests\StoreNewContenuRequest;
 use App\Models\Auteur;
+use App\Models\Commentaire;
 use App\Models\Contenu;
 use Illuminate\Http\Request;
 
@@ -159,4 +160,27 @@ class ContenuController extends Controller
     // }
 
 
+    public function index(Request $request)
+    {
+        $categorie = $request->query('categorie');
+        $requete = Contenu::with(['auteur', 'categories']);
+        if ($categorie) {
+            $requete->where('categorie', $categorie);
+        }
+        return response()->json(['data' => $requete->get()], 200);
+    }
+
+    public function show($id)
+    {
+        $contenu = Contenu::with("commentaire")->find($id);
+        if (!$contenu) {
+            return response()->json(
+                ['message' => 'Contenu introuvable.'],
+                404
+            );
+        }
+        $requete = Contenu::with(['contenus']);
+        $requete->where('contenu', $contenu);
+        return response()->json(['data' => $requete->get()], 200);
+    }
 }
