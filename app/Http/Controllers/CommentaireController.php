@@ -2,23 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ContenuResource;
+use App\Models\Categorie;
 use App\Models\Commentaire;
 use App\Models\Contenu;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class CommentaireController extends Controller
 {
     public function index($id)
     {
-        $contenu = Contenu::find($id);
-        if (!$contenu) {
-            return response()->json(
-                ['message' => 'Contenu introuvable.'],
-                404
-            );
-        }
+        $commentaires = Commentaire::where("contenu_id", $id);
 
-        $commentaires = Commentaire::where("contenu_id", $id)->get();
-        return response()->json(['data' => $commentaires], 200);
+        return ContenuResource::collection($commentaires->paginate(15));
     }
 }
