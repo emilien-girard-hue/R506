@@ -19,11 +19,8 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    // Vulnerable : est_verifie ne devrait jamais etre fillable
+    protected $fillable = ['name', 'email', 'password', 'est_verifie'];
 
     /**
      * The attributes that should be hidden for serialization.

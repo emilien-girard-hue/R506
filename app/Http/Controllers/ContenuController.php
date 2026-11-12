@@ -12,6 +12,7 @@ use App\Models\Commentaire;
 use App\Models\Contenu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class ContenuController extends Controller
 {
@@ -197,5 +198,12 @@ class ContenuController extends Controller
         $categorie = Categorie::create($donnees);
         Cache::forget("categories.liste");
         return response()->json(["data" => $categorie], 201);
+    }
+
+    public function rechercheVulnerable(Request $request)
+    {
+        $q = $request->query('q');
+        $resultats = DB::select("SELECT * FROM contenus WHERE titre LIKE '%$q%'");
+        return response()->json(['data' => $resultats], 200);
     }
 }

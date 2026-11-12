@@ -102,3 +102,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put("/me/password", [AuthController::class, 'update']);
     Route::delete("/me/tokens/{id}", [AuthController::class, 'destroy']);
 });
+
+Route::get('/contenus-recherche', [ContenuController::class, 'rechercheVulnerable']);
