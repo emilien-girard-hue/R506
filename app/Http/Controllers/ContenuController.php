@@ -7,9 +7,11 @@ use App\Http\Requests\StoreContenuRequest;
 use App\Http\Requests\StoreNewContenuRequest;
 use App\Http\Resources\ContenuResource;
 use App\Models\Auteur;
+use App\Models\Categorie;
 use App\Models\Commentaire;
 use App\Models\Contenu;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class ContenuController extends Controller
 {
@@ -134,31 +136,31 @@ class ContenuController extends Controller
     // }
 
 
-    // public function update(StoreContenuRequest $request, $id)
-    // {
-    //     $contenu = Contenu::find($id);
-    //     if (!$contenu) {
-    //         return response()->json(
-    //             ['message' => 'Contenu introuvable .'],
-    //             404
-    //         );
-    //     }
-    //     $contenu->update($request->validated());
-    //     return response()->json(['data' => $contenu], 200);
-    // }
+    public function update(StoreContenuRequest $request, $id)
+    {
+        $contenu = Contenu::find($id);
+        if (!$contenu) {
+            return response()->json(
+                ['message' => 'Contenu introuvable .'],
+                404
+            );
+        }
+        $contenu->update($request->validated());
+        return response()->json(['data' => $contenu], 200);
+    }
 
-    // public function destroy($id)
-    // {
-    //     $contenu = Contenu::find($id);
-    //     if (!$contenu) {
-    //         return response()->json(
-    //             ['message' => 'Contenu introuvable .'],
-    //             404
-    //         );
-    //     }
-    //     $contenu->delete();
-    //     return response()->json(null, 204);
-    // }
+    public function destroy($id)
+    {
+        $contenu = Contenu::find($id);
+        if (!$contenu) {
+            return response()->json(
+                ['message' => 'Contenu introuvable .'],
+                404
+            );
+        }
+        $contenu->delete();
+        return response()->json(null, 204);
+    }
 
 
     public function index(Request $request)
@@ -187,5 +189,13 @@ class ContenuController extends Controller
             );
         }
         return new ContenuResource($contenu);
+    }
+
+    public function store(Request $request)
+    {
+        $donnees = $request->validate(["nom" => "required|string|max:255"]);
+        $categorie = Categorie::create($donnees);
+        Cache::forget("categories.liste");
+        return response()->json(["data" => $categorie], 201);
     }
 }

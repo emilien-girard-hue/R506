@@ -20,20 +20,6 @@ class AuteurController extends Controller
         });
         return response()->json(['data' => $auteurs], 200);
     }
-
-
-    // public function show($id)
-    // {
-    //     $auteur = Auteur::find($id);
-    //     if (!$auteur) {
-    //         return response()->json(
-    //             ['message' => 'Auteur introuvable .'],
-    //             404
-    //         );
-    //     }
-    //     return response()->json(['data' => $auteur], 200);
-    // }
-
     public function show($id)
     {
         $auteur = Auteur::find($id);
