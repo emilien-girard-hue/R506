@@ -63,11 +63,13 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/categories', [CategorieController::class, 'index']);
 // Route::post('/categories', [CategorieController::class, 'store']);
 
-
-
-
-Route::post('/register', [AuthController::class, 'register']);
+// Route::post('/register', [AuthController::class, 'register']);
 // Route::post('/login', [AuthController::class, 'login']);
+
+
+
+
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
@@ -105,4 +107,5 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::get('/contenus-recherche', [ContenuController::class, 'rechercheVulnerable']);
 
+Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:register');
 Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:login');

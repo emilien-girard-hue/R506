@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Commentaire extends Model
 {
-    protected $fillable = ['nom_auteur', 'texte', 'contenu_id'];
+    protected $fillable = ['nom_auteur', 'texte'];
     use HasFactory;
     public function contenu()
     {

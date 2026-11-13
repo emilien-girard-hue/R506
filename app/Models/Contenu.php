@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Contenu extends Model
 {
-    protected $fillable = ['titre', 'categorie', 'description', 'auteur_id'];
+    protected $fillable = ['titre', 'categorie', 'description'];
     use HasFactory;
     public function auteur()
     {
